@@ -1,0 +1,55 @@
+---
+title: "hw-00-manasppanse-letsvote.qmd"
+author: "Manas Panse"
+format: html
+editor: visual
+execute:
+  warning: false
+  message: false
+  error: false
+---
+
+```{r setup, include = FALSE}
+# Loading all the necessary packages (required to do ONLY once)
+
+library(tidyverse)
+library(scico) # Color Palette
+library(DT) # Table Interactivity
+```
+
+```{r}
+# Let's first pull the dataset
+un_votes <- read.csv("data/un_votes.csv")
+```
+
+```{r}
+# Let's put the names of the largest economies in the world in a variable
+investigate_country <- c("India", "Japan", "Germany", "China", "United States")
+```
+
+```{r}
+# Pulling the data from the dataset using the investigate_country as filter
+
+un_votes |>
+  filter(
+    country %in% investigate_country,
+    issue %in% c("Nuclear weapons and nuclear material")
+  ) |>
+  ggplot(mapping = aes(
+    x = year,
+    y = percent_yes,
+    color = country
+  )) +
+  geom_point() +
+  geom_smooth(method = "loess", se = FALSE) +
+  labs(
+    title = "Nuclear Weapons & Material Voting Comparison between the BIG 5",
+    x = "Year",
+    y = "% of Yes Votes",
+    color = "Country"
+  ) +
+  scale_color_scico_d(palette = "roma") +
+  theme_minimal() +
+  theme(legend.position = "top")
+```
+#### As you can see from the calculated trendline above, the US has been voting in this criterion since the late 1940s and has always been in the most 'Yays' or the upper 50%, and China in the most 'Nays' or the lower 50%. Since the late 2010s, all the countries except India have a trend line which is going upward in the upper 50%. Even though the data is more than 4 years old, and the factors for drawing even a theoretical or vague conclusion(s) are very limited, and frankly speaking have no basis right now, this upward trend might indicate that within the next decade or two, there are going to be some major resolutions or brought to vote in the UN, and the chances of the above countries being in 'Yays' is more.
